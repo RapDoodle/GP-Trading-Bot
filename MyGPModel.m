@@ -1,7 +1,6 @@
 classdef MyGPModel < GPModel
     
     properties
-        trainingSet
         baseline
     end
     
