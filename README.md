@@ -4,7 +4,7 @@ This example presents a simple example of training a genetic-programming-based t
 ## Getting Started
 1. Clone the project
     ```bash
-    git clone https://github.com/RapDoodle/Trading-Bot-GP-Example.git
+    git clone https://github.com/RapDoodle/GP-Trading-Bot.git
     ```
 
 1. Download Genetic Programming Toolbox for MATLAB

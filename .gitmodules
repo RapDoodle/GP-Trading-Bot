@@ -1,0 +1,3 @@
+[submodule "gp"]
+	path = gp
+	url = https://github.com/RapDoodle/Genetic-Programming-MATLAB.git
