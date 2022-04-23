@@ -17,7 +17,7 @@ This example presents a simple example of training a genetic-programming-based t
     git submodule update --init
     ```
 
-1. Install MATLAB's Parallel Computing Toolbox. Skip this step if you have already installed the toolbox. If the toolbox is not available to you, change line 34 in `MyGPModel.m` to the following code
+1. Install MATLAB's Parallel Computing Toolbox. Skip this step if you have already installed the toolbox. If the toolbox is not available to you, change line 33 in `MyGPModel.m` to the following code
     ```matlab
     for s=1:n
     ```
