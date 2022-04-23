@@ -7,6 +7,11 @@ This example presents a simple example of training a genetic-programming-based t
     git clone https://github.com/RapDoodle/GP-Trading-Bot.git
     ```
 
+1. Change the current working directory to the project folder
+    ```bash
+    cd ./GP-Trading-Bot
+    ```
+
 1. Download Genetic Programming Toolbox for MATLAB
     ```bash
     git submodule update --init
