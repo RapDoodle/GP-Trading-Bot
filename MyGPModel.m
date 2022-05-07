@@ -17,7 +17,8 @@ classdef MyGPModel < GPModel
         end
         
         function fitnesses = evaluateFitness(model, varargin)
-            % Localize variables to avoid unnessary communication overhead
+            % Localize variables to avoid unnessary communication overhead.
+            % Skip this step if you do not use parallel computing toolbox.
             n = model.options.populationSize;
             
             % Retrieve the vairables initially provided when calling the 
@@ -30,6 +31,7 @@ classdef MyGPModel < GPModel
             
             fitnesses = zeros(n, 1);
             
+            % Get status information from the model's status struct
             gen = model.status.generation;
             % Execute using MATLAB's parallel computing toolbox. If you do
             % not have the license for it, replace `parfor` with `for`.
