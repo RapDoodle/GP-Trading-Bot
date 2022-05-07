@@ -16,9 +16,9 @@ classdef MyGPModel < GPModel
             fprintf("Buy-and-hold strategy on training set: %f\n", model.baseline);
         end
         
-        function forEachGeneration(model, gen, gens, varargin)
+        function fitnesses = evaluateFitness(model, varargin)
             % Localize variables to avoid unnessary communication overhead
-            n = model.populationSize;
+            n = model.options.populationSize;
             
             % Retrieve the vairables initially provided when calling the 
             % run method.
@@ -28,10 +28,12 @@ classdef MyGPModel < GPModel
             % using parallel computing toolbox
             population = model.population;
             
+            fitnesses = zeros(n, 1);
+            
+            gen = model.status.generation;
             % Execute using MATLAB's parallel computing toolbox. If you do
             % not have the license for it, replace `parfor` with `for`.
             parfor s=1:n
-                fitness = 0;
                 r = backtest(population{s}, data);
                 
                 fprintf("[Generation %d] Strategy %d return: %s\n", ...
@@ -39,13 +41,6 @@ classdef MyGPModel < GPModel
                 
                 fitnesses(s) = r;
             end
-            
-            fitnesses = model.sortPopulation(fitnesses);
-            model.statistics.minFitnesses(gen) = fitnesses(end);
-            model.statistics.maxFitnesses(gen) = fitnesses(1);
-            
-            model.naturalSelection();
-            model.reproduction(fitnesses);
         end
     end
 end

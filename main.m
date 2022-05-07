@@ -62,8 +62,7 @@ template.set("Operator.BinaryOperator.BinaryRelationalOperator.lhs", { ...
     Variable("RSI", 'bounded', 'double', 0, 100), ...
     Variable("EMA5", 'none', 'double'), ...
     Variable("EMA20", 'none', 'double'), ...
-    Variable("MACD", 'bounded', 'double', ...
-                min(trainingSet{:, 'MACD'}), max(trainingSet{:, 'MACD'})), ...
+    Variable("MACD", 'bounded', 'double', 0, 0), ...
     Variable("MACDSignal", 'none', 'double'), ...
     Variable("Bid", 'none', 'double'), ...
     Variable("Return5", 'bounded', 'double', ...
@@ -78,7 +77,7 @@ template.set("Operator.BinaryOperator.BinaryRelationalOperator.rhs", { ...
     Value(), Value(), Value(), Value(), Value(), Value(), ...
     Variable("EMA5", 'none', 'double'), ...
     Variable("EMA20", 'none', 'double'), ...
-    Variable("MACD", 'bounded', 'double', min(trainingSet{:, 'MACD'}), max(trainingSet{:, 'MACD'})), ...
+    Variable("MACD", 'bounded', 'double', 0, 0), ...
     Variable("MACDSignal", 'none', 'double'), ...
     });
 template.set("Operator.BinaryOperator.BinaryLogicalOperator.lhs", { ...
@@ -98,29 +97,36 @@ template.set("Statement.IfThenElse.elseNode", { ...
 
 %% Section 4: Define the parameters for GP
 % Note: The parameters are not optimized.
-populationSize = 25;
+opt.populationSize = 25;
 opt.maxHeight = 6;
 opt.generations = 20;
-opt.keepRate = 0.35;
-opt.mutationRate = 0.05;
-opt.terminalMutationRate = 0.15;
+opt.selectionSchema = 'tournament';
+opt.tournamentSize = 3;
+opt.eliteSize = 8;
+opt.crossoverFraction = 0.8;
+opt.mutateAfterCrossover = true;
+opt.reevaluateElites = false;
+opt.mutationProb = 0.05;
+opt.terminalMutationProb = 0.15;
 
 %% Section 5: Setup and optimize the GP Model
 % Instantiate the GP model
 myGPModel = MyGPModel();
 
+% Register the options
+myGPModel.register(opt);
+
 % Populate the GPModel with individuals
 % GPModel's `populate` will call the constructor specified
-myGPModel.populate(populationSize);
+myGPModel.populate();
 
 % Initialize every individual in the population
 myGPModel.init(template, opt.maxHeight);
 
-% Register the options
-myGPModel.options = opt;
-
 % Optimize the model using genetic algorithm
+tic;
 myGPModel.run(trainingSet);
+toc;
 
 %% Section 6: Evaluation
 % Show the best performing strategy in pseudocode
@@ -129,4 +135,3 @@ myGPModel.pseudocode(1);
 % Test the strategy on the test set
 r = backtest(myGPModel.best, testSet);
 fprintf("Return on test set: %s\n", string(r));
-
